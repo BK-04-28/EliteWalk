@@ -23,7 +23,7 @@ const RegisterForm = ({ onClose }) => {
         password,
       });
 
-      if (res.data.success) {
+      if (res.status === 201) {
         alert("Registration successful");
         onClose(); // ✅ Close modal
       } else {
