@@ -7,7 +7,12 @@ const userModel = require('./UserModel'); // 👈 Ensure file name matches exact
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+  {
+    origin : ["https://deploy-mern-1whq.vercel.app"],
+    methods : ["POST"],
+    credentials : true
+));
 
 // MongoDB connection from .env
 mongoose.connect(process.env.MONGO_URI, {
