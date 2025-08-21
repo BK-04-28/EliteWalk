@@ -7,12 +7,16 @@ const userModel = require('./UserModel'); // 👈 Ensure file name matches exact
 
 const app = express();
 app.use(express.json());
+
 app.use(cors(
   {
     origin : ["https://elite-walk-frontend.vercel.app"],
     methods : ["POST","GET"],
     credentials : true
+  }
 ));
+
+
 
 // MongoDB connection from .env
 mongoose.connect(process.env.MONGO_URI, {
