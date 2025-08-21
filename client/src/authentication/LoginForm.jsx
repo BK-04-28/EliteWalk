@@ -11,7 +11,7 @@ const LoginForm = ({ onClose, onShowRegister }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await axios.post("https://elite-walk-backend.vercel.app/login", {
         email,
         password,
       });

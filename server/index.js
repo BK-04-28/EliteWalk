@@ -1,35 +1,36 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const userModel = require('./UserModel');
+require('dotenv').config(); // 👈 Added
 
+const userModel = require('./UserModel'); // 👈 Ensure file name matches exactly
 
-// Initialize the app
 const app = express();
-app.use(express.json())
+app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/E-commerce',{
-    useNewUrlParser : true,
-    useUnifiedTopology : true
+// MongoDB connection from .env
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
-.then(()=>console.log("mongo connected"))
-.catch((err)=>console.log('error:',err))
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.log("MongoDB connection error:", err));
 
+// Register route
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
-  console.log("Received registration data:", req.body); // 👈 Add this log
 
   try {
     const user = await userModel.create({ name, email, password });
-    console.log("User inserted:", user); // 👈 Optional success log
     res.status(201).json(user);
   } catch (err) {
-    console.error("Error inserting user:", err); // 👈 Error log
+    console.error("Error inserting user:", err);
     res.status(500).json({ error: 'Registration failed', details: err });
   }
 });
 
+// Login route
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -51,8 +52,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
-const PORT  = process.env.PORT || 5000;
-app.listen(PORT, ()=>{
-    console.log('server running on 5000')
-})
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

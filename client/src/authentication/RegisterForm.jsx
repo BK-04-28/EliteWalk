@@ -7,7 +7,7 @@ const RegisterForm = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  axios.defaults.withCredentials = true;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,7 +17,7 @@ const RegisterForm = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post("https://elite-walk-backend.vercel.app/register", {
         name,
         email,
         password,

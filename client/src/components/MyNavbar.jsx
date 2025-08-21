@@ -32,7 +32,7 @@ function MyNavbar({ cartCount }) {
           {/* Brand + Toggle */}
           <Navbar.Brand className="fw-bold d-flex align-items-center">
             <img
-              src="/images/logo.png"
+              src="/Images/logo.png"
               alt="EliteWalk Logo"
               style={{
                 height: "40px",
