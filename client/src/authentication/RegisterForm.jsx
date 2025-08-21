@@ -25,7 +25,7 @@ const RegisterForm = ({ onClose }) => {
 
       if (res.status === 201) {
         alert("Registration successful");
-        onClose(); // ✅ Close modal
+        onClose(); 
       } else {
         alert("Registration failed");
       }
