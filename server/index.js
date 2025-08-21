@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors(
   {
     origin : ["https://deploy-mern-1whq.vercel.app"],
-    methods : ["POST"],
+    methods : ["POST","GET"],
     credentials : true
 ));
 
@@ -22,6 +22,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.log("MongoDB connection error:", err));
 
+app.get("/", (req, res)=>{
+    res.json("hello");
+})
 // Register route
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
