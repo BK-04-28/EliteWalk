@@ -17,7 +17,7 @@ const RegisterForm = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("https://elite-walk-backend.vercel.app/register", {
+      const res = await axios.post("https://elite-walk-api.vercel.app/register", {
         name,
         email,
         password,
