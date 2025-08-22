@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ onClose, onShowRegister }) => {
@@ -10,8 +9,9 @@ const LoginForm = ({ onClose, onShowRegister }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await axios.post("https://elite-walk-api.vercel.app/login", {
+      const res = await axios.post("http://localhost:5000/login", {
         email,
         password,
       });
@@ -19,10 +19,7 @@ const LoginForm = ({ onClose, onShowRegister }) => {
       if (res.data.success) {
         alert("Login Successfully");
         console.log("User Data", res.data.user);
-        onClose(); // Close modal
-        navigate("/main"); // Navigate to main page
-      } else {
-        alert("Invalid credentials");
+        navigate("/main");
       }
     } catch (err) {
       console.error("Login error", err);
@@ -34,36 +31,43 @@ const LoginForm = ({ onClose, onShowRegister }) => {
   };
 
   return (
-    <>
-      <h2>Login</h2>
+    <div className="container mt-4" style={{ maxWidth: "400px" }}>
+      <h2 className="text-center mb-4">Login</h2>
       <form onSubmit={handleLogin}>
-        <label className="mb-2">Email</label>
-        <input
-          type="email"
-          placeholder="Enter your email..."
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="form-control mb-2"
-          required
-        />
+        <div className="mb-3">
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Enter your email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="form-control"
+            required
+          />
+        </div>
 
-        <label className="mb-2">Password</label>
-        <input
-          type="password"
-          placeholder="Enter your password..."
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="form-control mb-2"
-          required
-        />
+        <div className="mb-3">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter your password..."
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="form-control"
+            required
+          />
+        </div>
 
-        <Button type="submit">Login</Button>
-        <p className="mt-3">
+        <button type="submit" className="btn btn-success w-100">
+          Login
+        </button>
+
+        <p className="mt-3 text-center">
           Don't have an account?{" "}
           <span
             onClick={() => {
-              onClose(); // Close login modal
-              onShowRegister(); // Show register modal
+              onClose && onClose();
+              onShowRegister && onShowRegister();
             }}
             style={{
               color: "blue",
@@ -75,7 +79,7 @@ const LoginForm = ({ onClose, onShowRegister }) => {
           </span>
         </p>
       </form>
-    </>
+    </div>
   );
 };
 

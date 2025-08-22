@@ -59,7 +59,6 @@ function MyNavbar({ cartCount }) {
                 to="/shoes"
                 className="text-white fw-semibold"
               >
-                <i className="fa-solid fa-watch me-2"></i>
                 Shoes
               </Nav.Link>
               <Nav.Link

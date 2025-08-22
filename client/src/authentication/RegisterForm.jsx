@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 
 const RegisterForm = ({ onClose }) => {
@@ -7,7 +6,9 @@ const RegisterForm = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   axios.defaults.withCredentials = true;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,15 +18,15 @@ const RegisterForm = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("https://elite-walk-api.vercel.app/register", {
+      const res = await axios.post("http://localhost:5000/register", {
         name,
         email,
         password,
       });
 
-      if (res.status === 201) {
+      if (res.data.success) {
         alert("Registration successful");
-        onClose(); 
+        onClose && onClose();
       } else {
         alert("Registration failed");
       }
@@ -41,56 +42,62 @@ const RegisterForm = ({ onClose }) => {
   };
 
   return (
-    <>
-      <h2 className="fw-bold">Register</h2>
+    <div className="container mt-4" style={{ maxWidth: "400px" }}>
+      <h2 className="mb-4 text-center">Register</h2>
       <form onSubmit={handleSubmit}>
-        <label className="mb-2">Name</label>
-        <input
-          type="text"
-          placeholder="Enter your full name..."
-          required
-          className="mb-2 form-control"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <label className="mb-2">Email</label>
-        <input
-          type="email"
-          placeholder="Enter email..."
-          required
-          className="mb-2 form-control"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <label className="mb-2">Password</label>
-        <input
-          type="password"
-          placeholder="Password..."
-          required
-          className="mb-2 form-control"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <label className="mb-2">Confirm Password</label>
-        <input
-          type="password"
-          placeholder="Confirm password..."
-          required
-          className="mb-2 form-control"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-
-        <div className="d-flex justify-content-center mt-4">
-          <Button className="px-3" type="submit">
-            Register
-          </Button>
+        <div className="mb-3">
+          <label>Name</label>
+          <input
+            type="text"
+            placeholder="Enter your full name"
+            className="form-control"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
+
+        <div className="mb-3">
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="form-control"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            className="form-control"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            placeholder="Re-enter password"
+            className="form-control"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-100">
+          Register
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 
