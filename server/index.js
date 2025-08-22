@@ -1,24 +1,22 @@
-// ✅ Dependencies
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-const User = require("./UserModel"); // make sure filename is correct
+const User = require("./UserModel");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ CORS setup (must match frontend domain)
-const allowedOrigin = "https://elite-walk-frontend.vercel.app";
+const allowedOrigin = "https://elite-walk-frontend.vercel.app"; // Your frontend URL
 
 app.use(cors({
   origin: allowedOrigin,
   credentials: true,
 }));
 
-app.use(express.json()); // to parse JSON bodies
+app.use(express.json());
 
-// ✅ MongoDB URI
+// ✅ MongoDB Atlas URI
 const mongoURI = "mongodb+srv://Bharath:bharath123@cluster0.4tbfg.mongodb.net/E-commerce?retryWrites=true&w=majority&appName=Cluster0";
 
 // ✅ MongoDB Connection
@@ -26,8 +24,8 @@ mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log("✅ MongoDB Atlas connected"))
-  .catch(err => console.log("❌ MongoDB connection error:", err));
+  .then(() => console.log("MongoDB Atlas connected"))
+  .catch(err => console.log("MongoDB connection error:", err));
 
 // ✅ Register Route
 app.post("/register", async (req, res) => {
@@ -40,10 +38,10 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    // Hash the password
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save user
+    // Create user
     const userDoc = await User.create({ name, email, password: hashedPassword });
 
     res.status(201).json({ success: true, user: { name: userDoc.name, email: userDoc.email } });
@@ -75,15 +73,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Test route
+// ✅ Default Route
 app.get("/", (req, res) => {
-  res.send("API is working ✅");
+  res.send("API is working");
 });
 
-// ✅ Export for Vercel or run locally
+// ✅ Export app for Vercel or run locally
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 }
 
