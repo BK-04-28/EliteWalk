@@ -29,27 +29,37 @@ mongoose.connect(mongoURI, {
 
 // ✅ Register Route
 app.post("/register", async (req, res) => {
+  console.log("[register] Request Body:", req.body);
+
   try {
     const { name, email, password } = req.body;
+    console.log("[register] Parsed Inputs:", { name, email, password });
 
-    // Check if user already exists
+    if (!name || !email || !password) {
+      console.error("[register] Missing field:", { name, email, password });
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
     const existingUser = await User.findOne({ email });
+    console.log("[register] existingUser:", existingUser);
+
     if (existingUser) {
       return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("[register] hashedPassword created");
 
-    // Create user
     const userDoc = await User.create({ name, email, password: hashedPassword });
+    console.log("[register] User document:", userDoc);
 
-    res.status(201).json({ success: true, user: { name: userDoc.name, email: userDoc.email } });
+    return res.status(201).json({ success: true, user: { name: userDoc.name, email: userDoc.email } });
   } catch (error) {
-    console.error("Register API error:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("[register] Internal Error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
 
 // ✅ Login Route
 app.post("/login", async (req, res) => {
