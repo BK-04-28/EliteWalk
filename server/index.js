@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 5000;
 
 // ✅ Middleware
 app.use(cors({
-  origin: "http://localhost:3000", // Change this to your Vercel frontend URL after deployment
+  origin: ["https://elite-walk-frontend.vercel.app"], 
+  methods : ["POST", "GET"],
   credentials: true,
 }));
 app.use(express.json());

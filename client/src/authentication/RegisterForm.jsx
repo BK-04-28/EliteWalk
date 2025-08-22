@@ -18,11 +18,14 @@ const RegisterForm = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/register", {
-        name,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://elite-walk-api.vercel.app/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
 
       if (res.data.success) {
         alert("Registration successful");
