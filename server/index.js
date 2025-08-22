@@ -7,8 +7,13 @@ const User = require("./UserModel");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Middleware
-app.use(cors({ origin: "*" }));
+const allowedOrigin = "https://elite-walk-frontend.vercel.app";  // your frontend URL
+
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true,    // Allow cookies/auth headers
+}));
+
 
 app.use(express.json());
 
@@ -25,24 +30,16 @@ mongoose.connect(mongoURI, {
 
 // ✅ Register Route
 app.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-
   try {
-    const userExist = await User.findOne({ email });
-    if (userExist) {
-      return res.status(400).json({ success: false, message: "Email already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
-    await user.save();
-
-    res.status(201).json({ success: true, message: "User registered successfully" });
+    const { username, email, password } = req.body;
+    const userDoc = await UserModel.create({ username, email, password });
+    res.json(userDoc);
   } catch (error) {
-    console.error("Register error:", error);
+    console.error("Register API error:", error);  // Full error print cheyyandi
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
 
 // ✅ Login Route
 app.post("/login", async (req, res) => {
